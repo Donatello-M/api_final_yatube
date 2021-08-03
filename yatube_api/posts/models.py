@@ -10,7 +10,7 @@ class Group(models.Model):
     description = models.TextField()
 
     class Meta:
-        ordering = ['title', ]
+        ordering = ['title']
 
     def __str__(self):
         return self.title
@@ -29,7 +29,7 @@ class Post(models.Model):
         upload_to='posts/', null=True, blank=True)
 
     class Meta:
-        ordering = ['-pub_date', ]
+        ordering = ['-pub_date']
 
     def __str__(self):
         return (f'{self.text[:15]}; Author: {self.author};'
@@ -46,7 +46,11 @@ class Comment(models.Model):
         'Дата добавления', auto_now_add=True, db_index=True)
 
     class Meta:
-        ordering = ['created', ]
+        ordering = ['created']
+
+    def __str__(self):
+        return (f'{self.text[:15]}; Author: {self.author};'
+                f' Post: {self.post.id}; Created: {self.created}')
 
 
 class Follow(models.Model):
@@ -64,5 +68,12 @@ class Follow(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'following'], name='unique_following'),
+            models.CheckConstraint(
+                name="prevent_self_follow",
+                check=~models.Q(user=models.F("following")),
+            ),
         ]
-        ordering = ['following', ]
+        ordering = ['following']
+
+    def __str__(self):
+        return f'User {self.user} following {self.following}'
