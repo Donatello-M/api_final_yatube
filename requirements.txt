@@ -6,5 +6,5 @@ pytest-pythonpath==0.7.3
 pytest-django
 djangorestframework
 djangorestframework-simplejwt
-djoser djangorestframework-simplejwt
+djoser djangorestframework_simplejwt
 pillow
