@@ -6,7 +6,3 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
         return (request.method in permissions.SAFE_METHODS
                 or obj.author == request.user)
 
-
-class IsPermittedRequestMethod(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.method == 'POST' or request.method == 'GET'
